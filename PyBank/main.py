@@ -1,26 +1,27 @@
-from datetime import date
 import os
 import csv
 
 #Path to collect data from the resources folder
 
-pybank_csv = os.path.join('..','Resources','budget_data.csv')
-print(pybank_csv)
-
-# for f in os.listdir("c:\Users\jeyae\OneDrive\Documents\Data Analytics\Homework\Python_Challenge\PyBank"):
-# 	print(f)
+pybank_csv = os.path.join('Resources','budget_data.csv')
 
 def budget_analysis(budget_data):
-    budget_date = date(budget_data[0])
+    
+    budget_date = str(budget_data[0])
     profit_losses =int(budget_data[1])
 
-    total_months += total_months
-    total_profit_losses = total_profit_losses + profit_losses
-    average_profit_losses = total_profit_losses / total_months
+    total_months = total_months + 1
+    print(total_months)
+#     total_profit_losses = total_profit_losses + profit_losses
+#     average_profit_losses = total_profit_losses / total_months
 
-    greatest_increase_profits = max(int(budget_data[1]))
-    greatest_decrease_losses = min(int(budget_data[1]))
-    
+#     greatest_increase_profits = max(int(budget_data[1]))
+#     greatest_decrease_losses = min(int(budget_data[1]))
+
+#     print(total_months)
+#     print(total_profit_losses)
+#     print(average_profit_losses)
+
 with open(pybank_csv, 'r') as csvfile:
 
     csvreader = csv.reader(csvfile,delimiter =',')
