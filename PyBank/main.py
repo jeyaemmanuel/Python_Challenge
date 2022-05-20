@@ -1,26 +1,40 @@
+from operator import countOf
 import os
 import csv
 
 #Path to collect data from the resources folder
-
 pybank_csv = os.path.join('Resources','budget_data.csv')
+total_months = 0
+total_profit_losses = 0
+greatest_increase_profits = 0
+greatest_decrease_losses = 0
+average_profit_losses = 0
 
 def budget_analysis(budget_data):
-    
-    budget_date = str(budget_data[0])
-    profit_losses =int(budget_data[1])
+    global total_months
+    global total_profit_losses
+    global greatest_increase_profits
+    global greatest_decrease_losses
+    global average_profit_losses
 
+    budget_date = budget_data[0]
+    profit_losses = int(budget_data[1])
+        
     total_months = total_months + 1
-    print(total_months)
-#     total_profit_losses = total_profit_losses + profit_losses
-#     average_profit_losses = total_profit_losses / total_months
+    total_profit_losses = total_profit_losses + profit_losses
+    
+    # greatest_increase_profits = profit_losses.max()
+    # greatest_decrease_losses = profit_losses.min()
 
-#     greatest_increase_profits = max(int(budget_data[1]))
-#     greatest_decrease_losses = min(int(budget_data[1]))
+    if greatest_increase_profits < profit_losses:
+        greatest_increase_profits = profit_losses
+    else:
+        greatest_decrease_losses = profit_losses
+    
 
-#     print(total_months)
-#     print(total_profit_losses)
-#     print(average_profit_losses)
+    # print(total_months)
+    # print(total_profit_losses)
+    # print(average_profit_losses)
 
 with open(pybank_csv, 'r') as csvfile:
 
@@ -28,8 +42,13 @@ with open(pybank_csv, 'r') as csvfile:
     header = next(csvreader)
     for row in csvreader:
         budget_analysis(row)
+    # average_profit_losses = total_profit_losses / total_months
+    print(total_months)
+    print(total_profit_losses)
+    print(average_profit_losses)   
+    print(greatest_increase_profits)
+    print(greatest_decrease_losses)
 
-   
    
 
 
