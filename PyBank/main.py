@@ -1,88 +1,53 @@
-from operator import countOf
 import os
 import csv
+import statistics
 
-#Path to collect data from the resources folder
 pybank_csv = os.path.join('Resources','budget_data.csv')
+
 total_months = 0
 total_profit_losses = 0
 greatest_increase_profits = 0
-greatest_decrease_losses = 0
-average_profit_losses = 0
-
-def budget_analysis(budget_data):
-    global total_months
-    global total_profit_losses
-    global greatest_increase_profits
-    global greatest_decrease_losses
-    global average_profit_losses
-
-    budget_date = budget_data[0]
-    profit_losses = int(budget_data[1])
-        
-    total_months = total_months + 1
-    total_profit_losses = total_profit_losses + profit_losses
-    
-    # greatest_increase_profits = profit_losses.max()
-    # greatest_decrease_losses = profit_losses.min()
-
-    if greatest_increase_profits < profit_losses:
-        greatest_increase_profits = profit_losses
-    else:
-        greatest_decrease_losses = profit_losses
-    
-
-    # print(total_months)
-    # print(total_profit_losses)
-    # print(average_profit_losses)
+greatest_decrease_profits = 0
+greatest_profit_month =''
+greatest_loss_month = ''
+average_change = 0
+profit_loss_data = [] #To hold all the profit/loss data from the spreadsheet
+changes_each_month = [] #To hold all the changes between each month
 
 with open(pybank_csv, 'r') as csvfile:
-
-    csvreader = csv.reader(csvfile,delimiter =',')
-    header = next(csvreader)
+    csvreader = csv.reader(csvfile, delimiter=',')
+    csv_header = next(csvreader)
     for row in csvreader:
-        budget_analysis(row)
-    # average_profit_losses = total_profit_losses / total_months
-    print(total_months)
-    print(total_profit_losses)
-    print(average_profit_losses)   
-    print(greatest_increase_profits)
-    print(greatest_decrease_losses)
+        #set names 
+        budget_date = str(row[0])
+        profit_losses = int(row[1])
 
-   
+        total_months += 1
+        total_profit_losses += profit_losses
+        profit_loss_data.append(profit_losses) #Add the data from spreadsheet to the list
 
+for i in range(len(profit_loss_data)-1):
+    change = (profit_loss_data[i+1] - profit_loss_data[i])
+    changes_each_month.append(change)   #Add the change between the 2 consecutive months in the list
 
-# Your task is to create a Python script that analyses the records to calculate each of the following:
+greatest_increase_profits = max(changes_each_month)    
+greatest_decrease_profits = min(changes_each_month) 
+average_change = round(statistics.mean(changes_each_month),2)
 
+print("Financial Analysis")
+print("-----------------------------------------------")
 
-# The total number of months included in the dataset
+print(f"Total Months: {total_months}")
+print(f"Total: $ {total_profit_losses}")
+print(f"Average Change is: ${average_change}")
+print(f"Greatest Increase in Profits: {greatest_profit_month}   (${greatest_increase_profits})")
+print(f"Greatest Decrease in Profits: {greatest_loss_month}   (${greatest_decrease_profits})")
 
-
-# The net total amount of "Profit/Losses" over the entire period
-
-
-# The average of the changes in "Profit/Losses" over the entire period
-
-
-# The greatest increase in profits (date and amount) over the entire period
-
-
-# The greatest decrease in losses (date and amount) over the entire period
-
-
-
-
-# As an example, your analysis should look similar to the one below:
-
-# Financial Analysis
-# ----------------------------
-# Total Months: 86
-# Total: $38382578
-# Average  Change: $-2315.12
-# Greatest Increase in Profits: Feb-2012 ($1926159)
-# Greatest Decrease in Profits: Sep-2013 ($-2196167)
-
-
-
-
-# In addition, your final script should both print the analysis to the terminal and export a text file with the results.
+f = open("C:/Users/jeyae/OneDrive/Documents/Data Analytics/Homework/Python_Challenge/PyBank/Analysis/Analysis.txt", "w")
+f.write("Financial Analysis\n")
+f.write("-----------------------------------------------\n")
+f.write(f"Total Months: {total_months}\n")
+f.write(f"Total: $ {total_profit_losses}\n")
+f.write(f"Average Change is: ${average_change}\n")
+f.write(f"Greatest Increase in Profits: {greatest_profit_month}    (${greatest_increase_profits})\n")
+f.write(f"Greatest Decrease in Profits: {greatest_loss_month}    (${greatest_decrease_profits})\n")
